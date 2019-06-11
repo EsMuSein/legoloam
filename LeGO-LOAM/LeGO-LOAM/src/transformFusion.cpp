@@ -38,7 +38,6 @@ private:
 
     ros::NodeHandle nh;
 
-
     ros::Publisher pubLaserOdometry2;
     ros::Subscriber subLaserOdometry;
     ros::Subscriber subOdomAftMapped;
@@ -95,6 +94,8 @@ public:
         /*add*/
         laserMap2baselink.header.frame_id = "/map";
         laserMap2baselink.child_frame_id = "base_link";
+        Map2Baselink_path.header.frame_id = "/map";
+
 
         for (int i = 0; i < 6; ++i)
         {
@@ -258,10 +259,7 @@ public:
 
         Eigen::Quaterniond testQ ;
         testQ = map_2_init.block<3, 3>(0,0);
-//         cout<<"testQw"<<testQ.w()<<endl;
-//          cout<<"testQx"<<testQ.x()<<endl;
-//           cout<<"testQy"<<testQ.y()<<endl;
-//            cout<<"testQz"<<testQ.z()<<endl;
+
 
         Eigen::Quaterniond lidarQ ;
         lidarQ= map_2_baselink.block<3, 3>(0,0);
@@ -286,7 +284,7 @@ public:
         laserMap2baselink.pose.pose.position.z = lidarP.z();
         pubLaserMap2baselink.publish(laserMap2baselink);
 
-
+        Map2Baselink_path_points.header.frame_id = "/map";
         Map2Baselink_path_points.header.stamp = laserOdometry2.header.stamp;
         Map2Baselink_path_points.pose.orientation.x = lidarQ.x();
         Map2Baselink_path_points.pose.orientation.y = lidarQ.y();
